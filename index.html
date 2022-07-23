@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess the Word</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Unlock&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/script.js" defer></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>
+        Poem Pick
+      </h1>
+      
+      <div class="message"></div>
+      <!--Search for authors OR poem titles, with buttons to select a random choice
+      The back home button only appears when they have moved from author selection to title selection
+      This entire class is initially hidden but is immediately called up by the javascript.
+      It gets rehidden when the user moves onto the poem display page-->
+      <section class="authors-or-titles hide">
+            <input type="text" class="filter" placeholder="Search" />
+
+            <div class="button-container">
+                <button class="wild">Wild Card</button>
+                <button class="back-home hide">Forget this. Start over.</button>
+            </div>  
+        <!--lists all the author names OR poem titles-->
+        <ul class="list"></ul>
+    </section>
+
+    <!--This only appears on the poem display page-->
+    <section class="display-poem hide">
+      <div class="button-container">
+        <button class="back-home hide">Go Back to Start</button>
+        <button class="download">Download</button>
+      </div>
+      <div class="poem">
+        
+      </div>
+    </section>
+    
+    
+      
+      
+  </body>
+
+</html>
