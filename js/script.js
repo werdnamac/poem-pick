@@ -12,16 +12,20 @@ const authorsOrtitles = document.querySelector(".authors-or-titles");
 const list = document.querySelector(".list");
 // variable to select the download button
 const download = document.querySelector(".download");
-//variable to select the area where we display the poem
-const showPoem = document.querySelector(".poem");
+//variable to select the div that holds both (1) the final-screen buttons and (2) the div where we display the poem
+const poemAndButtons = document.querySelector(".poem-and-buttons");
+//variable to select the div where we display the poem
+const thePoem = document.querySelector(".poem");
+
+let selectedAuthor = "";
 
 //fetch author names info from poetry db
-const getAuthorNames = async function() {
+async function getAuthorNames() {
     const authorRequest = await fetch(`https://poetrydb.org/author`);
     const authorArray = await authorRequest.json();
     const authorNames = authorArray.authors;
     displayAuthorNames(authorNames);
-    
+
 }
 
 //start the app
@@ -42,19 +46,20 @@ const displayAuthorNames = function(authorNames) {
         list.append(nameItem);
         
     }
-    
+    // Set the initial message
+    message.innerHTML = "To get started, search for and Select an Author's Name. Or push the <strong>Wild Card</strong> button, and we'll randomly select the author.";
 }
 
 //if an h4 list item is selected, that author name is sent to the getAuthorDetails function
 //if an h5 list item is selected, that poem title is sent to the displayPoem function.
 list.addEventListener("click", function(e) {
     if (e.target.matches("h4")) {
-      const selectedAuthor = e.target.innerText;
+      let selectedAuthor = e.target.innerText;
       getTitleNames(selectedAuthor);
       
     } else if (e.target.matches("h5")) {
         const selectedTitle = e.target.innerText;
-        displayPoem(selectedTitle);
+        getPoem(selectedTitle);
     }
   });
 
@@ -63,7 +68,7 @@ list.addEventListener("click", function(e) {
       const titlesRequest = await fetch(`https://poetrydb.org/author/${selectedAuthor}/title`);
       const titles = await titlesRequest.json();
       //displayTitles(titles);
-      console.log(titles);
+      
       displayTitles(titles)
       
   }
@@ -78,6 +83,22 @@ const displayTitles = function(titles) {
         titleItem.innerHTML = `<h5>${title.title}</h5>`
         list.append(titleItem);
     }
+
 }   
 
+getPoem = async function(selectedTitle) {
 
+    const poemRequest = await fetch(`https://poetrydb.org/author/${selectedAuthor}/title/${selectedTitle}`);
+    const poem = await poemRequest.json();
+    console.log(poem.title);
+    console.log(selectedAuthor, selectedTitle);
+}
+
+/*
+displayPoem = function(selectedTitle) {
+    authorsOrtitles.classList.add("hide");
+    poemAndButtons.classList.remove("hide");
+
+
+}
+*/
