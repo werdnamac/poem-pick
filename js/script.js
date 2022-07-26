@@ -24,8 +24,9 @@ async function getAuthorNames() {
     const authorRequest = await fetch(`https://poetrydb.org/author`);
     const authorArray = await authorRequest.json();
     const authorNames = authorArray.authors;
+    
     displayAuthorNames(authorNames);
-
+    
 }
 
 //start the app
@@ -48,13 +49,33 @@ const displayAuthorNames = function(authorNames) {
     }
     // Set the initial message
     message.innerHTML = "To get started, search for and Select an Author's Name. Or push the <strong>Wild Card</strong> button, and we'll randomly select the author.";
+    chooseRandomAuthor(authorNames);
 }
+
+// pick random author 
+
+const chooseRandomAuthor = function(authorNames) {
+    const randomIndex = Math.floor(Math.random() * authorNames.length);
+    randomAuthor = authorNames[randomIndex].trim();
+    holdRandomAuthor(randomAuthor);
+}
+
+const holdRandomAuthor = function(randomAuthor) {
+    
+}
+
+wild.addEventListener("click", function(e)  {
+    const randomIndex = Math.floor(Math.random() * authorNames.length);
+    randomAuthor = authorNames[randomIndex].trim();
+    getTitleNames(randomAuthor);
+});
+
 
 //if an h4 list item is selected, that author name is sent to the getAuthorDetails function
 //if an h5 list item is selected, that poem title is sent to the displayPoem function.
 list.addEventListener("click", function(e) {
     if (e.target.matches("h4")) {
-      let selectedAuthor = e.target.innerText;
+      selectedAuthor = e.target.innerText;
       getTitleNames(selectedAuthor);
       
     } else if (e.target.matches("h5")) {
@@ -65,10 +86,10 @@ list.addEventListener("click", function(e) {
 
     //get the names of the poems written by the selected author
   getTitleNames = async function(selectedAuthor) {
-      const titlesRequest = await fetch(`https://poetrydb.org/author/${selectedAuthor}/title`);
+      const titlesRequest = await fetch(`https://poetrydb.org/author/${selectedAuthor}`);
       const titles = await titlesRequest.json();
       //displayTitles(titles);
-      
+      console.log(selectedAuthor);
       displayTitles(titles)
       
   }
@@ -87,18 +108,39 @@ const displayTitles = function(titles) {
 }   
 
 getPoem = async function(selectedTitle) {
-
-    const poemRequest = await fetch(`https://poetrydb.org/author/${selectedAuthor}/title/${selectedTitle}`);
-    const poem = await poemRequest.json();
-    console.log(poem.title);
-    console.log(selectedAuthor, selectedTitle);
+    
+    const linesRequest = await fetch(`https://poetrydb.org/title/${selectedTitle}/author,title,lines.text`);
+    const lines = await linesRequest.text();
+    displayPoem(lines)
+    
 }
 
-/*
-displayPoem = function(selectedTitle) {
+
+displayPoem = function(lines) {
     authorsOrtitles.classList.add("hide");
     poemAndButtons.classList.remove("hide");
+    console.log(lines);
+    console.log(lines.split("\n",4));
+    let index = lines.indexOf("author");
+    let index2 = lines.indexOf('"author" ');
+    let index3 = lines.indexOf("title");
+    let authorCheck = lines.slice(index + 6, );
+    let index4 =authorCheck.indexOf("\n");
+    let carriageRemoved = authorCheck.slice(1, )
+    let index5 = carriageRemoved.indexOf("\n");
+    let printName = carriageRemoved.slice(0, index5);
+    console.log(index);
+    console.log(index2);
+    console.log(index3);
+    console.log(authorCheck);
+    console.log(index4);
+    console.log(index5);
+    console.log(printName);
+   
+    if (lines.split("\n", 2).includes(`author,${selectedAuthor})`)) {
+        console.log(lines);
+    }
 
 
 }
-*/
+
