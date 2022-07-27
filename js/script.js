@@ -104,43 +104,54 @@ const displayTitles = function(titles) {
         titleItem.innerHTML = `<h5>${title.title}</h5>`
         list.append(titleItem);
     }
-
+    message.innerHTML=`Select a title by ${selectedAuthor}`;
 }   
 
 getPoem = async function(selectedTitle) {
     
-    const linesRequest = await fetch(`https://poetrydb.org/title/${selectedTitle}/author,title,lines.text`);
-    const lines = await linesRequest.text();
-    displayPoem(lines)
+    const poemRequest = await fetch(`https://poetrydb.org/title/${selectedTitle}/author,title,lines.text`);
+    const poem = await poemRequest.text();
+    displayPoem(poem)
     
 }
 
 
-displayPoem = function(lines) {
+displayPoem = function(poem) {
     authorsOrtitles.classList.add("hide");
     poemAndButtons.classList.remove("hide");
-    console.log(lines);
-    console.log(lines.split("\n",4));
-    let index = lines.indexOf("author");
-    let index2 = lines.indexOf('"author" ');
-    let index3 = lines.indexOf("title");
-    let authorCheck = lines.slice(index + 6, );
-    let index4 =authorCheck.indexOf("\n");
-    let carriageRemoved = authorCheck.slice(1, )
-    let index5 = carriageRemoved.indexOf("\n");
-    let printName = carriageRemoved.slice(0, index5);
-    console.log(index);
-    console.log(index2);
-    console.log(index3);
-    console.log(authorCheck);
-    console.log(index4);
-    console.log(index5);
-    console.log(printName);
-   
-    if (lines.split("\n", 2).includes(`author,${selectedAuthor})`)) {
-        console.log(lines);
+
+    const splitPoem = poem.split("\n");
+    console.log(splitPoem);
+
+    thisTitle = splitPoem[1];
+    thisAuthor = splitPoem[3];
+    thisText = splitPoem.splice(3, splitPoem.length);
+    thisTextFormatted = thisText.join(" <br> ")
+    
+    message.innerHTML = "Your Poem:"
+
+    if (thisAuthor.includes(`${selectedAuthor}`)) {
+
+    const poemDiv = document.createElement("div");
+    //userDiv.classList.add("user-info");
+
+    poemDiv.innerHTML =
+
+    `
+    <div>
+      <h2>${thisTitle}</h2>
+      <h4>by ${thisAuthor}</h4>
+      <p>${thisTextFormatted}</p>
+    </div> 
+    `
+    thePoem.append(poemDiv);
+
+    if (thisAuthor.includes(`${selectedAuthor}`)) {
+        console.log("match");
+    } else {
+        console.log("no match");
     }
-
-
+    }
 }
+
 
