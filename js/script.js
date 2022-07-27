@@ -2,8 +2,10 @@
 const message = document.querySelector(".message");
 // variable for the search bar
 const filter = document.querySelector(".filter");
-// variable for the wild card button
-const wild = document.querySelector(".wild");
+// variable for the wild card button to choose the author name
+const wildAuthor = document.querySelector(".wild-1");
+// variable for the wild card button to choose the title name
+const wildTitle = document.querySelector(".wild-2");
 // variable for the Start Over button
 const backHome = document.querySelector(".back-home");
 // variable to select the section with the search bar, the buttons, and the unordered list
@@ -17,13 +19,16 @@ const poemAndButtons = document.querySelector(".poem-and-buttons");
 //variable to select the div where we display the poem
 const thePoem = document.querySelector(".poem");
 
+
+let authorNames = "";
+let titles ="";
 let selectedAuthor = "";
 
 //fetch author names info from poetry db
 async function getAuthorNames() {
     const authorRequest = await fetch(`https://poetrydb.org/author`);
     const authorArray = await authorRequest.json();
-    const authorNames = authorArray.authors;
+    authorNames = authorArray.authors;
     
     displayAuthorNames(authorNames);
     
@@ -49,26 +54,19 @@ const displayAuthorNames = function(authorNames) {
     }
     // Set the initial message
     message.innerHTML = "To get started, search for and Select an Author's Name. Or push the <strong>Wild Card</strong> button, and we'll randomly select the author.";
-    chooseRandomAuthor(authorNames);
-}
-
-// pick random author 
-
-const chooseRandomAuthor = function(authorNames) {
-    const randomIndex = Math.floor(Math.random() * authorNames.length);
-    randomAuthor = authorNames[randomIndex].trim();
-    holdRandomAuthor(randomAuthor);
-}
-
-const holdRandomAuthor = function(randomAuthor) {
     
 }
 
-wild.addEventListener("click", function(e)  {
+// pick random author if user clicks on the wild card when on the author page
+wildAuthor.addEventListener("click", () => {
     const randomIndex = Math.floor(Math.random() * authorNames.length);
-    randomAuthor = authorNames[randomIndex].trim();
+    console.log(authorNames);
+    console.log(randomIndex);
+    const randomAuthor = authorNames[randomIndex].trim();
+    console.log(randomAuthor);
     getTitleNames(randomAuthor);
 });
+
 
 
 //if an h4 list item is selected, that author name is sent to the getAuthorDetails function
@@ -87,10 +85,12 @@ list.addEventListener("click", function(e) {
     //get the names of the poems written by the selected author
   getTitleNames = async function(selectedAuthor) {
       const titlesRequest = await fetch(`https://poetrydb.org/author/${selectedAuthor}`);
-      const titles = await titlesRequest.json();
+      titles = await titlesRequest.json();
       //displayTitles(titles);
       console.log(selectedAuthor);
       displayTitles(titles)
+      wildAuthor.classList.add("hide");
+      wildTitle.classList.remove("hide");
       
   }
 
@@ -101,11 +101,23 @@ const displayTitles = function(titles) {
     for (const title of titles) {
         const titleItem = document.createElement("li");
         titleItem.classList.add("title-item");
+        //if I don't include the .title here, the title variable has a tilte, and author, and the poem; so it is an 
+        //array of three objects, each containing strings of letters, instead of a single string of letters.
         titleItem.innerHTML = `<h5>${title.title}</h5>`
         list.append(titleItem);
     }
     message.innerHTML=`Select a title by ${selectedAuthor}`;
 }   
+
+  // pick random title if user clicks on the wild card when on the title page
+  wildTitle.addEventListener("click", () => {
+    const randomIndex = Math.floor(Math.random() * titles.length);
+    console.log(randomIndex);
+    console.log(titles);
+    //if I don't include the .title here, the titles array has titles, authors, and lines; so indexing results in undefined
+    const randomTitle = titles[randomIndex].title.trim();
+    getPoem(randomTitle);
+});
 
 getPoem = async function(selectedTitle) {
     
@@ -122,6 +134,8 @@ displayPoem = function(poem) {
 
     const splitPoem = poem.split("\n");
     console.log(splitPoem);
+
+    wildTitle.classList.add("hide");
 
     thisTitle = splitPoem[1];
     thisAuthor = splitPoem[3];
