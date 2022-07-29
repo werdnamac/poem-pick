@@ -14,6 +14,8 @@ const authorsOrtitles = document.querySelector(".authors-or-titles");
 const list = document.querySelector(".list");
 // variable to select the download button
 const download = document.querySelector(".download");
+//variable to select the start over button
+const startOver = document.querySelector(".start-over");
 //variable to select the div that holds both (1) the final-screen buttons and (2) the div where we display the poem
 const poemAndButtons = document.querySelector(".poem-and-buttons");
 //variable to select the div where we display the poem
@@ -63,8 +65,8 @@ wildAuthor.addEventListener("click", () => {
     console.log(authorNames);
     console.log(randomIndex);
     const randomAuthor = authorNames[randomIndex].trim();
-    console.log(randomAuthor);
-    getTitleNames(randomAuthor);
+    selectedAuthor = randomAuthor;
+    getTitleNames(selectedAuthor);
 });
 
 
@@ -119,6 +121,33 @@ const displayTitles = function(titles) {
     getPoem(randomTitle);
 });
 
+backHome.addEventListener("click", () => {
+
+    console.log("hi");
+
+    //hide the button configuration for the page displaying the titles
+    
+    wildTitle.classList.add("hide");
+
+    //unhide the wild card button
+    wildAuthor.classList.remove("hide");
+
+    //delete all the titles from the list
+    const titles = document.querySelectorAll(".title-item");
+    console.log(titles);
+    for (title of titles) {
+        title.remove();
+    }
+
+    //hide the backHome button
+    backHome.classList.add("hide");
+
+    //start the app again
+    // this will unhide the authorsOrTitles buttons and search bar, list the author names, and reinstate the original message 
+    getAuthorNames();
+
+});
+
 getPoem = async function(selectedTitle) {
     
     const poemRequest = await fetch(`https://poetrydb.org/title/${selectedTitle}/author,title,lines.text`);
@@ -139,7 +168,7 @@ displayPoem = function(poem) {
 
     thisTitle = splitPoem[1];
     thisAuthor = splitPoem[3];
-    thisText = splitPoem.splice(3, splitPoem.length);
+    thisText = splitPoem.splice(5, splitPoem.length);
     thisTextFormatted = thisText.join(" <br> ")
     
     message.innerHTML = "Your Poem:"
@@ -147,7 +176,8 @@ displayPoem = function(poem) {
     if (thisAuthor.includes(`${selectedAuthor}`)) {
 
     const poemDiv = document.createElement("div");
-    //userDiv.classList.add("user-info");
+
+    poemDiv.classList.add("poem-div");
 
     poemDiv.innerHTML =
 
@@ -167,5 +197,38 @@ displayPoem = function(poem) {
     }
     }
 }
+
+startOver.addEventListener("click", () => {
+
+    //hide the buttons and poem on the poem display page
+    poemAndButtons.classList.add("hide");
+
+    //start app over
+    getAuthorNames();
+
+    //delete all the titles from the list
+    const titles = document.querySelectorAll(".title-item");
+    console.log(titles);
+    for (title of titles) {
+        title.remove();
+    }
+
+    //hide the backHome button
+    backHome.classList.add("hide");
+
+    //delete the existing poem
+    const poemDivToRemove = document.querySelectorAll(".poem-div");
+    console.log(poemDivToRemove);
+    poemDivToRemove.innerHTML = "";
+    console.log(poemDivToRemove.innerHTML);
+
+    for (element of poemDivToRemove) {
+        element.remove();
+    }
+
+    //unhide the author wild card button
+    wildAuthor.classList.remove("hide");
+
+});
 
 
