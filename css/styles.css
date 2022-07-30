@@ -8,7 +8,7 @@ body {
     justify-content: center;
     margin: 0;
     font-family: "Open Sans", sans-serif;
-    background-color: #fbf9de;
+    background-color: #E8F0E4;
     color: #333;
     font-size: 16px;
 }
@@ -18,24 +18,16 @@ body {
     display: none !important;
 }
 
-/*
-.view-repos {
-    margin-top: 1.5em;
-    padding: 0.5em 1em;
-    cursor: pointer;
-    align-self: center;
-    width: 300px;
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
 }
 
-.fa-github-alt {
-    color: #f86d58;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-*/
 h1 {
     width: 100%;
     padding: 1em 0.5em;
@@ -46,33 +38,41 @@ h1 {
     background-color: #483978;
     color: #fff;
     text-transform: uppercase;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    
 }
 
 
 
 h3 {
-    width: 100%;
-    text-align: center;
-    color: #f86d58;
+    width: 80%;
+    text-align: left;
+    color: green;
 }
 
 ul {
     list-style: none;
-    padding: 0;
+    padding: 1em;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    width: 90%;
-    max-width: 1200px;
+
+.button-container {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
 }
 
+button {
+    width: 200px;
+    margin-top: 1em;
+    
+    padding: .5em;
+    border: 2px solid #483978;
+    background-color: lightblue;
+}
+
+button:hover {
+ cursor: pointer;
+}
 
 .filter-repos {
     width: 300px;
@@ -93,9 +93,10 @@ section.display-poem {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: #fff;
+    
     margin-top: 0;
-    padding: 2em;
+    margin-bottom: 0;
+    padding: 1em;
 }
 
 .list {
@@ -134,8 +135,26 @@ section.display-poem {
     margin: 0.5em 0;
 }
 
+.poem-and-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.divider {
+    width: 100%;
+}
+
+.poem-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .poem {
     width: 100%;
+    padding-left: .5em;
+    padding-right: .5em;
 }
 
 .poem h3 {
@@ -143,12 +162,7 @@ section.display-poem {
 }
 
 
-.button-container {
-    width: 100%;
-    background-color: #fff;
-    padding-left: 2em;
-    padding-bottom: 2em;
-}
+
 /*
 .view-repos {
     max-width: 200px;
@@ -168,6 +182,35 @@ section.display-poem {
     .list li {
         width: 48%;
     }
+
+    button {
+        width: 250px;
+        margin-top: 1em;
+        
+        padding: .5em;
+        border: 2px solid #483978;
+        background-color: lightblue;
+    }
+    
+
+    
+    .filter-repos {
+        width: 350px;
+        
+        margin-top: 1em;
+        padding: 1em;
+        margin-bottom: 1em;
+        border: 2px solid #483978;
+    }
+
+    .filter {
+        width: 300px;
+        height: 50px;
+    }
+    .button-container {
+    width: 36%;
+}
+
 }
 
 /*
@@ -181,4 +224,41 @@ section.display-poem {
     .list li {
         width: 30%;
     }
+
+
+.button-container {
+    width: 28%;
+}
+
+
+
+h3 {
+    padding-left: 200px;
+    padding-right: 200px;
+}
+
+button {
+    width: 300px;
+    margin-top: 1em;
+    
+    padding: .5em;
+    border: 2px solid #483978;
+    background-color: lightblue;
+}
+
+
+
+.filter-repos {
+    width: 400px;
+    margin-top: 1em;
+    padding: 1em;
+    margin-bottom: 1em;
+    border: 2px solid #483978;
+}
+
+.filter {
+    width: 400px;
+    
+}
+
 }

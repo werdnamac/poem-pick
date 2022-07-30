@@ -13,7 +13,7 @@ const authorsOrtitles = document.querySelector(".authors-or-titles");
 // variable to select all the items in the unordered list
 const list = document.querySelector(".list");
 // variable to select the download button
-const download = document.querySelector(".download");
+const downloadPoem = document.querySelector(".download");
 //variable to select the start over button
 const startOver = document.querySelector(".start-over");
 //variable to select the div that holds both (1) the final-screen buttons and (2) the div where we display the poem
@@ -25,6 +25,7 @@ const thePoem = document.querySelector(".poem");
 let authorNames = "";
 let titles ="";
 let selectedAuthor = "";
+let thisTextFormatted = "";
 
 //fetch author names info from poetry db
 async function getAuthorNames() {
@@ -55,7 +56,7 @@ const displayAuthorNames = function(authorNames) {
         
     }
     // Set the initial message
-    message.innerHTML = "To get started, search for and Select an Author's Name. Or push the <strong>Wild Card</strong> button, and we'll randomly select the author.";
+    message.innerHTML = "Search for and Select an Author's Name. Or push the <strong>Wild Card</strong> button, and we'll select.";
     
 }
 
@@ -135,8 +136,9 @@ backHome.addEventListener("click", () => {
     //delete all the titles from the list
     const titles = document.querySelectorAll(".title-item");
     console.log(titles);
-    for (title of titles) {
+    for (const title of titles) {
         title.remove();
+        console.log(titles);
     }
 
     //hide the backHome button
@@ -161,6 +163,14 @@ displayPoem = function(poem) {
     authorsOrtitles.classList.add("hide");
     poemAndButtons.classList.remove("hide");
 
+    //delete all the titles from the list
+    const titles = document.querySelectorAll(".title-item");
+    console.log(titles);
+    for (const title of titles) {
+        title.remove();
+        console.log(titles);
+    }
+
     const splitPoem = poem.split("\n");
     console.log(splitPoem);
 
@@ -171,7 +181,7 @@ displayPoem = function(poem) {
     thisText = splitPoem.splice(5, splitPoem.length);
     thisTextFormatted = thisText.join(" <br> ")
     
-    message.innerHTML = "Your Poem:"
+    message.innerHTML = ""
 
     if (thisAuthor.includes(`${selectedAuthor}`)) {
 
@@ -196,7 +206,43 @@ displayPoem = function(poem) {
         console.log("no match");
     }
     }
+
+   
 }
+
+function download(file, text) {
+              
+    //creating an invisible element
+    const element = document.createElement('a');
+    element.setAttribute('href', 
+    'data:text/plain;charset=utf-8, '
+    + encodeURIComponent(text));
+    element.setAttribute('download', file);
+  
+    // Above code is equivalent to
+    // <a href="path of file" download="file name">
+  
+    document.body.appendChild(element);
+  
+    //onClick property
+    element.click();
+  
+    document.body.removeChild(element);
+    
+}
+  
+// Start file download.
+downloadPoem.addEventListener("click", function() {
+    // Generate download of Poem.txt 
+    
+    const html = thisTextFormatted;
+    const text = thisTextFormatted.replace(/ <br> /g, "\n");
+    const filename = "Poem.txt";
+    console.log(text);
+    console.log(filename);
+    download(filename, text);
+}, false);
+
 
 startOver.addEventListener("click", () => {
 
@@ -212,6 +258,8 @@ startOver.addEventListener("click", () => {
     for (title of titles) {
         title.remove();
     }
+
+   
 
     //hide the backHome button
     backHome.classList.add("hide");
