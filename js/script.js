@@ -37,6 +37,8 @@ async function getAuthorNames() {
     
 }
 
+
+
 //start the app
 getAuthorNames();
 
@@ -70,7 +72,25 @@ wildAuthor.addEventListener("click", () => {
     getTitleNames(selectedAuthor);
 });
 
-
+filter.addEventListener("input", function (e) {
+    const searchText = e.target.value;
+    // turn the captured text to lower case
+    const lowerSearchText = searchText.toLowerCase();
+    //select all repos in document
+    const searchables = document.querySelectorAll(".author-item, .title-item");
+  
+    for (const searchable of searchables) {
+      // looping through all the author or title items, capturing lower case versions of all inner text
+      const lowerSearchable = searchable.innerText.toLowerCase();
+      // only show repos that include some of the searched text
+      if (lowerSearchable.includes(lowerSearchText)) {
+       searchable.classList.remove("hide");
+      }
+        else {
+          searchable.classList.add("hide");
+        } // if else clause ends here
+      } //for look ends here
+    });
 
 //if an h4 list item is selected, that author name is sent to the getAuthorDetails function
 //if an h5 list item is selected, that poem title is sent to the displayPoem function.
@@ -87,11 +107,12 @@ list.addEventListener("click", function(e) {
 
     //get the names of the poems written by the selected author
   getTitleNames = async function(selectedAuthor) {
-      const titlesRequest = await fetch(`https://poetrydb.org/author/${selectedAuthor}`);
+      const titlesRequest = await fetch(`https://poetrydb.org/author/${selectedAuthor}:abs`);
       titles = await titlesRequest.json();
       //displayTitles(titles);
       console.log(selectedAuthor);
-      displayTitles(titles)
+      console.log(titles)
+;      displayTitles(titles)
       wildAuthor.classList.add("hide");
       wildTitle.classList.remove("hide");
       
@@ -101,6 +122,7 @@ list.addEventListener("click", function(e) {
 const displayTitles = function(titles) {
     backHome.classList.remove("hide");
     list.innerHTML ="";
+    filter.value="";
     for (const title of titles) {
         const titleItem = document.createElement("li");
         titleItem.classList.add("title-item");
@@ -126,12 +148,14 @@ backHome.addEventListener("click", () => {
 
     console.log("hi");
 
-    //hide the button configuration for the page displaying the titles
-    
+    //hide the button configuration for the page displaying the titles 
     wildTitle.classList.add("hide");
 
     //unhide the wild card button
     wildAuthor.classList.remove("hide");
+
+    //set search back to default;
+    filter.value="";
 
     //delete all the titles from the list
     const titles = document.querySelectorAll(".title-item");
@@ -152,9 +176,10 @@ backHome.addEventListener("click", () => {
 
 getPoem = async function(selectedTitle) {
     
-    const poemRequest = await fetch(`https://poetrydb.org/title/${selectedTitle}/author,title,lines.text`);
+    const poemRequest = await fetch(`https://poetrydb.org/title,author/${selectedTitle}:abs;${selectedAuthor}:abs/author,title,lines.text`);
     const poem = await poemRequest.text();
-    displayPoem(poem)
+
+displayPoem(poem);
     
 }
 
@@ -176,18 +201,16 @@ displayPoem = function(poem) {
 
     wildTitle.classList.add("hide");
 
-    thisTitle = splitPoem[1];
-    thisAuthor = splitPoem[3];
-    thisText = splitPoem.splice(5, splitPoem.length);
+    const thisTitle = splitPoem[1];
+    const thisAuthor = splitPoem[3];
+    const thisText = splitPoem.splice(5, splitPoem.length);
     thisTextFormatted = thisText.join(" <br> ")
     
-    message.innerHTML = ""
-
-    if (thisAuthor.includes(`${selectedAuthor}`)) {
+    message.innerHTML = ""   
 
     const poemDiv = document.createElement("div");
 
-    poemDiv.classList.add("poem-div");
+    poemDiv.classList.add("poem-div")
 
     poemDiv.innerHTML =
 
@@ -205,7 +228,7 @@ displayPoem = function(poem) {
     } else {
         console.log("no match");
     }
-    }
+    /*}*/
 
    
 }
@@ -249,17 +272,20 @@ startOver.addEventListener("click", () => {
     //hide the buttons and poem on the poem display page
     poemAndButtons.classList.add("hide");
 
+    //set search back to default
+    filter.value="";
+
     //start app over
     getAuthorNames();
 
     //delete all the titles from the list
     const titles = document.querySelectorAll(".title-item");
     console.log(titles);
-    for (title of titles) {
+    for (let title of titles) {
         title.remove();
     }
 
-   
+    
 
     //hide the backHome button
     backHome.classList.add("hide");

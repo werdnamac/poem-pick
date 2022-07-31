@@ -74,7 +74,7 @@ button:hover {
  cursor: pointer;
 }
 
-.filter-repos {
+.filter {
     width: 300px;
     margin-top: 1em;
     padding: 1em;
@@ -194,14 +194,7 @@ section.display-poem {
     
 
     
-    .filter-repos {
-        width: 350px;
-        
-        margin-top: 1em;
-        padding: 1em;
-        margin-bottom: 1em;
-        border: 2px solid #483978;
-    }
+   
 
     .filter {
         width: 300px;
