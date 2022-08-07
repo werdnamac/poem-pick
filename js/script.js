@@ -25,7 +25,8 @@ const thePoem = document.querySelector(".poem");
 let authorNames = "";
 let titles ="";
 let selectedAuthor = "";
-let thisTextFormatted = "";
+//let thisTextFormatted = "";
+let htmlPoem = {};
 
 //fetch author names info from poetry db
 async function getAuthorNames() {
@@ -219,6 +220,7 @@ displayPoem = function(poem) {
 
     poemDiv.classList.add("poem-div")
 
+
     poemDiv.innerHTML =
 
     `
@@ -228,7 +230,17 @@ displayPoem = function(poem) {
       <p>${thisTextFormatted}</p>
     </div> 
     `
+    htmlPoem = 
+    `
+    <p>${thisTitle}<br>
+by ${thisAuthor}<br> 
+${thisTextFormatted}</p>
+    
+    `
+
     thePoem.append(poemDiv);
+
+   
   
 }
 
@@ -257,11 +269,18 @@ function download(file, text) {
 // Start file download.
 downloadPoem.addEventListener("click", function() {
     // Generate download of Poem.txt
-    // Right now the thisTextFormatted is in html
-    const html = thisTextFormatted;
     // turn it into a more readable form by replacing all the 
     // breaks with new lines
-    const text = thisTextFormatted.replace(/ <br> /g, "\n");
+    console.log(htmlPoem);
+    const text4= htmlPoem.replace(/<p>/,"").trim();
+    const text3 = text4.replace(/<br>/,"").trim();
+    const text2 = text3.replace(/<br>/,"\n").trim();
+    const text1 = text2.replace(/<br>/g,"\n").trim();
+    const text = text1.replace(/<[^>]*>/,"");
+
+    console.log(text);
+    
+    
     const filename = "Poem.txt";
     // send the text with the generic filename to the download function
     download(filename, text);
@@ -278,8 +297,6 @@ startOver.addEventListener("click", () => {
     //set search back to default
     filter.value="";
 
-    //start app over
-    getAuthorNames();
 
     //delete all the titles from the list
     const titles = document.querySelectorAll(".title-item");
@@ -288,22 +305,22 @@ startOver.addEventListener("click", () => {
         title.remove();
     }
 
-    
-
     //hide the backHome button
     backHome.classList.add("hide");
 
     //delete the existing poem
     const poemDivToRemove = document.querySelectorAll(".poem-div");
-    poemDivToRemove.innerHTML = "";
-/*
+
     for (element of poemDivToRemove) {
         element.remove();
     }
-    */
+    
 
     //unhide the author wild card button
     wildAuthor.classList.remove("hide");
+
+    //start app over
+    getAuthorNames();
 
 });
 
